@@ -37,6 +37,10 @@ class LBM_KVS:
     # 平衡态下的流体速度分布函数（(x,y)是格点坐标，i是分速度方向）
     def f_eq(self,x,y,i):
         u_sq = self.vel[x,y,0]**2+self.vel[x,y,1]**2  # 这个格点的宏观流速的平方
+        u_proj = np.dot(self.e[i],self.vel[x,y])      # 计算宏观流速与分速度e_i的点积，即宏观流速在e_i方向上的投影
+        return self.rho[x,y]*self.w[i]*(1.0+3.0*u_proj+4.5*u_proj**2-1.5*u_sq)
+
+    # 通过碰撞与对流更新分布函数，计算下一时刻的流体状态
 
 
     @ti.func  # compute equilibrium distribution function
